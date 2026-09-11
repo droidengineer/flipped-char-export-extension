@@ -4,14 +4,6 @@
 
 In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to JSON for import into Folx AI Contact Manager, a database, or other app/service.
 
-**How it works:**
-
-1. You click the extension icon while on a `flipped.chat/edit/...` page (logged in).
-2. It injects a script into that tab that reads the form fields directly from the DOM — including the actual `<img src>` for the profile photo.
-3. A popup shows the extracted JSON and a Download button that saves it as a .json file.
-
-⛔ ***Nothing ever gets written back into your character.***
-
 **What you need:**
 
 1. A zip or xpi file containing the browser extension, unzipped somewhere
@@ -28,7 +20,15 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
 
 **To use it:** navigate to a `flipped.chat/edit/...` page while logged in, click the extension icon, hit **Extract Character Data**, review the preview (and any ⚠ warnings), then **Download JSON**.
 
+---
 
+**How it works:**
+
+1. You click the extension icon while on a `flipped.chat/edit/...` page (logged in).
+2. It injects a script into that tab that reads the form fields directly from the DOM — including the actual `<img src>` for the profile photo.
+3. A popup shows the extracted JSON and a Download button that saves it as a .json file.
+
+⛔ ***Nothing ever gets changed or written back into your character. Your character data stays private.***
 
 
 
