@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Flipped.Chat Character Exporter",
+  "version": "1.0.0",
+  "description": "Extracts character data from a flipped.chat character edit page and exports it as Folx-importable JSON.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://flipped.chat/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Export Character to JSON"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "flipped-chat-exporter@example.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

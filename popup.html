@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Flipped.Chat Exporter</title>
+  <style>
+    body {
+      width: 340px;
+      font-family: system-ui, sans-serif;
+      background: #111827;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 14px;
+    }
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: #fff;
+    }
+    button {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+    #extractBtn { background: #7c3aed; color: white; }
+    #extractBtn:hover { background: #6d28d9; }
+    #downloadBtn { background: #059669; color: white; display: none; }
+    #downloadBtn:hover { background: #047857; }
+    #status { font-size: 12px; color: #9ca3af; min-height: 16px; margin-bottom: 8px; }
+    #warnings {
+      font-size: 11px;
+      color: #fbbf24;
+      background: #1f2937;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+      display: none;
+      white-space: pre-wrap;
+    }
+    pre {
+      background: #1f2937;
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 10px;
+      max-height: 220px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flipped.Chat → Folx JSON</h1>
+  <div id="status">Open a flipped.chat character edit page, then click Extract.</div>
+  <button id="extractBtn">Extract Character Data</button>
+  <button id="downloadBtn">Download JSON</button>
+  <div id="warnings"></div>
+  <pre id="preview"></pre>
+  <script src="popup.js"></script>
+</body>
+</html>
