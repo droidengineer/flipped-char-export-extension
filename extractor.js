@@ -9,12 +9,22 @@
   const norm = (s) => (s || "").replace(/[ \t]+\n/g, "\n").trim();
 
   // Ordered list of field labels as they appear top-to-bottom on the edit page.
-  // Used to bound "search between this label and the next" for multi-element fields.
+  // Used both to bound "search between this label and the next" for
+  // multi-element fields, and to define the output JSON's key order below.
   const LABEL_ORDER = [
     "Profile Photo", "Avatar", "Gender", "Voice", "Name", "Identity",
     "for character(private seen)", "background history(public seen)",
     "Greeting", "Conversational Style", "Tag", "Bio", "Visibility"
   ];
+
+  // Extension version, included in the export so downstream tooling can tell
+  // which extractor schema produced a given file. Content scripts have
+  // access to this subset of the runtime API even in the page's context.
+  const extApi = typeof browser !== "undefined" ? browser : (typeof chrome !== "undefined" ? chrome : null);
+  const extVersion =
+    extApi && extApi.runtime && extApi.runtime.getManifest
+      ? extApi.runtime.getManifest().version
+      : null;
 
   // Find the element whose OWN direct text (ignoring nested element text)
   // matches labelText, case-insensitively, ignoring a trailing required "*".
@@ -253,12 +263,18 @@
     return null;
   }
 
+  // Key order below intentionally follows LABEL_ORDER (character_url and
+  // version first, then each field in the order its label appears on the
+  // page top-to-bottom; "Avatar" is skipped since it's the same image as
+  // Profile Photo, per the merged profile_photo field).
   const result = {
     character_url: location.href,
-    name: valueForLabel("Name"),
-    identity: valueForLabel("Identity"),
+    version: extVersion,
+    profile_photo: extractProfilePhoto(),
     gender: selectedOption("Gender", ["Woman", "Man", "Non-binary"]),
     voice: extractVoice(),
+    name: valueForLabel("Name"),
+    identity: valueForLabel("Identity"),
     description: {
       for_character_private: valueForDescription("for character", "for character(private seen)"),
       background_history_public: valueForDescription("background history", "background history(public seen)"),
@@ -268,7 +284,6 @@
     tags: extractTags(),
     bio: valueForLabel("Bio"),
     visibility: selectedOption("Visibility", ["Public", "Unlisted", "Private"]),
-    profile_photo: extractProfilePhoto(),
     _warnings: warnings,
   };
 
