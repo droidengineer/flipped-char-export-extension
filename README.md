@@ -32,4 +32,4 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
 
 
 
-![](F:/AI%20Projects/Apps/flipped-char-export-extension/assets/928143fbeb62548851fc069e1eae4949cdbd93cf.png) Kid Tested. Mother Approved.
+![](icons-scribe/icon128.png) Kid Tested. Mother Approved.
