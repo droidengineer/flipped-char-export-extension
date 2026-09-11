@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Flipped.Chat Character Exporter",
-  "version": "1.0.0",
+  "name": "Scribe's Flipped.Chat Character Exporter",
+  "version": "1.0.1",
   "description": "Extracts character data from a flipped.chat character edit page and exports it as Folx-importable JSON.",
   "permissions": ["activeTab", "scripting"],
   "host_permissions": ["https://flipped.chat/*"],

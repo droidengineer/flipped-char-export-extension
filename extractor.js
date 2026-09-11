@@ -60,9 +60,78 @@
     return norm(field.value);
   }
 
+  // The two Description textareas' React useId()-derived ids are NOT stable
+  // across characters (confirmed: differs per character), so we can't rely
+  // on a fixed id. Instead we match on the field's <h5> heading text, which
+  // is static UI copy regardless of character — e.g.:
+  //   <h5>for character<span>(private seen)</span></h5>
+  //   <h5>background history<span>(public seen)</span></h5>
+  // then walk up to the nearest ancestor containing the <textarea>.
+  function findElementByText(tag, textStart) {
+    const els = document.querySelectorAll(tag);
+    for (const el of els) {
+      const t = norm(el.textContent).toLowerCase();
+      if (t.startsWith(textStart.toLowerCase())) return el;
+    }
+    return null;
+  }
+
+  function textareaNearHeading(headingText) {
+    let heading = findElementByText("h5", headingText) || findElementByText("label", headingText);
+    if (!heading) return null;
+    let anc = heading;
+    for (let i = 0; i < 6 && anc; i++) {
+      const ta = anc.querySelector ? anc.querySelector("textarea") : null;
+      if (ta) return ta;
+      anc = anc.parentElement;
+    }
+    return null;
+  }
+
+  function valueForDescription(headingText, fallbackLabel) {
+    const ta = textareaNearHeading(headingText);
+    if (ta) return norm(ta.value);
+    warnings.push(`Could not locate textarea near heading "${headingText}" — falling back to label search for "${fallbackLabel}".`);
+    return valueForLabel(fallbackLabel);
+  }
+
+  // The app renders each radio-style option (Gender, Visibility) with an
+  // inner indicator div that toggles between class "block" (selected) and
+  // "hidden" (not selected), e.g.:
+  //   <div class="h-full w-full rounded-full border-2 border-white block">   <- selected
+  //   <div class="h-full w-full rounded-full border-2 border-white hidden">  <- not selected
+  // Note: the OUTER wrapper circle also carries "rounded-full" + sometimes an
+  // exact "border-white" class token, so we require the block/hidden class
+  // too — otherwise we can match the wrapper instead of the real toggle.
+  function isIndicatorDiv(el) {
+    if (!el || el.tagName !== "DIV") return false;
+    const cl = el.classList;
+    return (
+      cl.contains("rounded-full") &&
+      cl.contains("border-white") &&
+      (cl.contains("block") || cl.contains("hidden"))
+    );
+  }
+
+  function findIndicatorNear(startNode) {
+    // Climb a few ancestor levels from the option's text node, searching
+    // each ancestor's subtree, stopping at the first indicator found —
+    // this keeps us inside that single option's wrapper rather than
+    // accidentally matching a sibling option's indicator.
+    let anc = startNode;
+    for (let i = 0; i < 4 && anc; i++) {
+      const divs = anc.querySelectorAll ? anc.querySelectorAll("div") : [];
+      for (const d of divs) {
+        if (isIndicatorDiv(d)) return d;
+      }
+      anc = anc.parentElement;
+    }
+    return null;
+  }
+
   // Radio-style option groups (Gender, Visibility): find which of `options`
-  // is currently selected. Tries native <input type=radio>, aria-checked,
-  // and common "selected/active" class name heuristics, in that order.
+  // is currently selected via the block/hidden indicator div, falling back
+  // to native <input type=radio> / aria-checked if the app's markup differs.
   function selectedOption(labelText, options) {
     const startEl = findLabelEl(labelText);
     if (!startEl) {
@@ -72,18 +141,23 @@
     for (const opt of options) {
       const optLabelEl = findLabelEl(opt);
       if (!optLabelEl) continue;
-      if (startEl.compareDocumentPosition(optLabelEl) & Node.DOCUMENT_POSITION_FOLLOWING) {
-        const host = optLabelEl.closest("button, label, div") || optLabelEl;
-        const radio = host.querySelector('input[type=radio]');
-        if (radio) {
-          if (radio.checked) return opt;
-          continue;
-        }
-        const ariaHost = host.closest("[aria-checked]");
-        if (ariaHost && ariaHost.getAttribute("aria-checked") === "true") return opt;
-        const cls = (host.className || "").toString().toLowerCase();
-        if (/selected|active|\bchecked\b|--on\b/.test(cls)) return opt;
+      if (!(startEl.compareDocumentPosition(optLabelEl) & Node.DOCUMENT_POSITION_FOLLOWING)) continue;
+
+      const indicator = findIndicatorNear(optLabelEl);
+      if (indicator) {
+        if (indicator.classList.contains("block")) return opt;
+        if (indicator.classList.contains("hidden")) continue;
       }
+
+      // Fallbacks in case markup differs on some pages.
+      const host = optLabelEl.closest("button, label, div") || optLabelEl;
+      const radio = host.querySelector("input[type=radio]");
+      if (radio) {
+        if (radio.checked) return opt;
+        continue;
+      }
+      const ariaHost = host.closest("[aria-checked]");
+      if (ariaHost && ariaHost.getAttribute("aria-checked") === "true") return opt;
     }
     warnings.push(
       `Could not confidently detect the selected "${labelText}" option — verify manually (options tried: ${options.join(", ")}).`
@@ -91,8 +165,10 @@
     return null;
   }
 
-  // Tag chips: short text elements with an adjacent remove ("×") control,
-  // located between the "Tag" label and the "Bio" label.
+  // Tag chips: <span class="...">TagText<span class="iconfont-custom icon-close ...">
+  // The remove "×" is an icon font rendered via CSS (::before), not real text,
+  // so we match on the icon's class name rather than its (empty) textContent.
+  // The chip's own text minus the icon's (empty) text content is the tag text.
   function extractTags() {
     const startEl = findLabelEl("Tag");
     const endEl = findLabelEl("Bio");
@@ -100,46 +176,61 @@
       warnings.push('Could not locate the "Tag" section.');
       return [];
     }
-    const candidates = document.querySelectorAll("span, div, button");
+    const closeIcons = document.querySelectorAll('[class*="icon-close"]');
     const tags = [];
-    for (const el of candidates) {
-      const afterStart = startEl.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING;
+    for (const icon of closeIcons) {
+      const afterStart = startEl.compareDocumentPosition(icon) & Node.DOCUMENT_POSITION_FOLLOWING;
       const beforeEnd = endEl
-        ? el.compareDocumentPosition(endEl) & Node.DOCUMENT_POSITION_FOLLOWING
+        ? icon.compareDocumentPosition(endEl) & Node.DOCUMENT_POSITION_FOLLOWING
         : true;
       if (!afterStart || !beforeEnd) continue;
-      const hasRemoveBtn = Array.from(el.querySelectorAll("button, span")).some(
-        (c) => norm(c.textContent) === "×" || norm(c.textContent) === "x"
-      );
-      if (hasRemoveBtn && el.children.length <= 2) {
-        const text = norm(el.textContent).replace(/[×x]\s*$/i, "").trim();
-        if (text && text.length < 40 && !tags.includes(text)) tags.push(text);
-      }
+      const chip = icon.parentElement;
+      if (!chip) continue;
+      const text = norm(chip.textContent);
+      if (text && text.length < 40 && !tags.includes(text)) tags.push(text);
     }
     if (!tags.length) warnings.push('Found no tags — verify the "Tag" section manually.');
     return tags;
   }
 
-  // Voice: e.g. "Young Conversational Male" plus small tag chips like "Young","Airy".
+  // Voice: name is in <div class="mb-2">Young Conversational Male</div>,
+  // tags are sibling <span> elements in the same "text-left" container:
+  //   <div class="text-left">
+  //     <div class="mb-2">Young Conversational Male</div>
+  //     <span>Young</span><span>Airy</span>
+  //   </div>
   function extractVoice() {
     const labelEl = findLabelEl("Voice");
+    const endEl = findLabelEl("Name");
     if (!labelEl) {
       warnings.push('Could not locate the "Voice" section.');
       return { name: "", tags: [] };
     }
-    let node = labelEl.nextElementSibling;
-    let hops = 0;
-    while (node && hops < 6 && norm(node.textContent).length === 0) {
-      node = node.nextElementSibling;
-      hops++;
+    const mb2Divs = document.querySelectorAll("div.mb-2");
+    let nameEl = null;
+    for (const d of mb2Divs) {
+      const afterStart = labelEl.compareDocumentPosition(d) & Node.DOCUMENT_POSITION_FOLLOWING;
+      const beforeEnd = endEl
+        ? d.compareDocumentPosition(endEl) & Node.DOCUMENT_POSITION_FOLLOWING
+        : true;
+      if (afterStart && beforeEnd) {
+        nameEl = d;
+        break;
+      }
     }
-    const block = node || labelEl.parentElement;
-    const fullText = norm(block ? block.textContent : "");
-    const lines = fullText.split("\n").map(norm).filter(Boolean);
-    return {
-      name: lines[0] || "",
-      tags: lines.slice(1),
-    };
+    if (!nameEl) {
+      warnings.push('Could not locate the Voice name — verify manually.');
+      return { name: "", tags: [] };
+    }
+    const name = norm(nameEl.textContent);
+    const parent = nameEl.parentElement;
+    const tags = parent
+      ? Array.from(parent.children)
+          .filter((c) => c !== nameEl && c.tagName === "SPAN")
+          .map((s) => norm(s.textContent))
+          .filter(Boolean)
+      : [];
+    return { name, tags };
   }
 
   // Profile photo: first <img> appearing after the "Profile Photo" label,
@@ -169,8 +260,8 @@
     gender: selectedOption("Gender", ["Woman", "Man", "Non-binary"]),
     voice: extractVoice(),
     description: {
-      for_character_private: valueForLabel("for character(private seen)"),
-      background_history_public: valueForLabel("background history(public seen)"),
+      for_character_private: valueForDescription("for character", "for character(private seen)"),
+      background_history_public: valueForDescription("background history", "background history(public seen)"),
     },
     greeting: valueForLabel("Greeting"),
     conversational_style: valueForLabel("Conversational Style"),
