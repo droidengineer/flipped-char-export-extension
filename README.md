@@ -20,7 +20,8 @@ OR
 2. Click **Load Temporary Add-on**
 3. Select `manifest.json` inside the folder.
 
->⚠️ **Note:** Firefox temporary add-ons unload on browser restart — for a permanent installation, it must be signed via [Mozilla's add-on tools](https://addons.mozilla.org), but for personal use the temporary load is fine. If you need a permanent installation, please see me on Discord.
+> [!NOTE] ⚠️
+> Firefox temporary add-ons unload on browser restart — for a permanent installation, it must be signed via [Mozilla's add-on tools](https://addons.mozilla.org), but for personal use the temporary load is fine. If you need a permanent installation, please see me on Discord.
 
 
 **Chrome:** 
