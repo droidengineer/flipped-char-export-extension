@@ -1,12 +1,12 @@
 ###### flipped-char-export-extension
 
-# Flipped.Chat Character Export Browser Extension
+# Flipped.Chat Character ⟶ JSON Exporter Browser Extension
 
-In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to JSON for import into Folx AI Contact Manager, a database, or other app/service.
+In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to JSON for import into [Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service.
 
-**What you need:**
+## What you need
 
-1. A [zip or xpi file containing the browser extension](https://github.com/droidengineer/flipped-char-export-extension/releases), unzipped somewhere
+1. A [zip or xpi file containing the browser extension](https://github.com/droidengineer/flipped-char-export-extension/releases) ⟶ unzipped somewhere
    
 OR
 2. Clone the GitHub repository
@@ -14,8 +14,7 @@ OR
    ```git clone https://github.com/droidengineer/flipped-char-export-extension.git```
 
 ## Quick Start: Loading the browser extension
-![](https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/firefox.svg)
-**Firefox:** 
+### Firefox
 1. 🌐 Open Firefox ⇒ go to `about:debugging#/runtime/this-firefox`
 2. Click **Load Temporary Add-on**
 3. Select `manifest.json` inside the folder.
@@ -24,14 +23,18 @@ OR
 > Firefox temporary add-ons unload on browser restart — for a permanent installation, it must be signed via [Mozilla's add-on tools](https://addons.mozilla.org), but for personal use the temporary load is fine. If you need a permanent installation, please see me on Discord.
 
 
-**Chrome:** 
+### Chrome
 1. 🌐 Open Chrome ⇒ go to `chrome://extensions`
 2. Enable **Developer mode** (top right)
 3. Click **Load unpacked** then select the `flipped-char-export-extension` folder.
 
-## Exporting your Flipped.Chat Character
+## ⮊ Exporting your Flipped.Chat Character
 
-**To use it:** navigate to a `flipped.chat/edit/...` page while logged in, click the extension icon, hit **Extract Character Data**, review the preview (and any ⚠ warnings), then **Download JSON**.
+### To use it
+1. Navigate to a `flipped.chat/edit/...` page while logged in
+2. Click the extension icon![example-click.png](assets/example-click.png)
+3. Hit **Extract Character Data**![example-extract.png](assets/example-extract.png)
+4. Review the preview (and any ⚠ warnings), then **Download JSON**.
 
 ---
 
