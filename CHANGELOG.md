@@ -1,4 +1,8 @@
 # Changelog
+## 1.1.1
+- Fixed Voice extraction
+- Fixed JSON export
+- Fixed manifest icon
 
 ## 1.1.0
 - Added extension icon (16/32/48/128px), generated from the provided logo, referenced in both `icons` and `action.default_icon` in the manifest.
@@ -9,4 +13,4 @@
 - Fixed Voice extraction: name and tag chips were being concatenated into one string; now read separately from the `div.mb-2` name element and its sibling `<span>` tags.
 
 ## 1.0.0
-- Initial release: popup-triggered extraction of Name, Identity, Gender, Voice, both Description fields, Greeting, Conversational Style, Tags, Bio, Visibility, and Profile Photo from a flipped.chat character edit page, exported as downloadable JSON.
+- Initial release: popup-triggered extraction of Name, Identity, Gender, Voice, both Description fields, Greeting, Conversational Style, Tags, Bio, Visibility, and Profile Photo from a Flipped.Chat character edit page, exported as downloadable JSON.

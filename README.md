@@ -7,8 +7,9 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
 **What you need:**
 
 1. A zip or xpi file containing the browser extension, unzipped somewhere
-   OR
-2. Clone the github repository
+   
+OR
+2. Clone the GitHub repository
 
    ```git clone https://github.com/droidengineer/flipped-char-export-extension.git```
 
@@ -43,4 +44,4 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
 
 
 
-![](icons-scribe/icon128.png) Kid Tested. Mother Approved.
+![](icons/icon48-action.png) Kid Tested. Mother Approved.
