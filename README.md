@@ -10,11 +10,22 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
    OR
 2. Clone the github repository
 
-## Loading the browser extension
+   ```git clone https://github.com/droidengineer/flipped-char-export-extension.git```
 
-**Firefox:** go to `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on," and select `manifest.json` inside the folder. (Firefox temporary add-ons unload on browser restart — for a permanent install you'd need to sign it via Mozilla's add-on tools, but for personal use the temporary load is fine.) If you must have a permanent install please see me on Discord.
+## Quick Start: Loading the browser extension
+![](https://cdn.jsdelivr.net/npm/@thesvg/icons/icons/firefox.svg)
+**Firefox:** 
+1. 🌐 Open Firefox ⇒ go to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on**
+3. Select `manifest.json` inside the folder.
 
-**Chrome:** go to `chrome://extensions`, enable "Developer mode" (top right), click "Load unpacked," and select the unzipped `flipped-char-export-extension` folder.
+>⚠️ **Note:** Firefox temporary add-ons unload on browser restart — for a permanent installation, it must be signed via [Mozilla's add-on tools](https://addons.mozilla.org), but for personal use the temporary load is fine. If you need a permanent installation, please see me on Discord.
+
+
+**Chrome:** 
+1. 🌐 Open Chrome ⇒ go to `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** then select the `flipped-char-export-extension` folder.
 
 ## Exporting your Flipped.Chat Character
 
