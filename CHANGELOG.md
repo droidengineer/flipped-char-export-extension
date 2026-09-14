@@ -1,4 +1,20 @@
 # Changelog
+
+## 1.2.0
+
+* Output format changed to **Character Card V2** (`{ spec: "chara_card_v2", spec_version: "2.0", data: {...} }`), the widely-supported standard used by SillyTavern, chub.ai, and most character-card importers — no longer a Folx-specific shape.
+* Field mapping onto the V2 schema:
+    * Name → `data.name`
+    * "for character (private seen)" → `data.description` (the always-injected core definition)
+    * "background history (public seen)" → `data.scenario` (public backstory/setting context)
+    * Bio → `data.creator_notes` (short public-facing blurb)
+    * Greeting → `data.first_mes`
+    * Conversational Style → `data.mes_example` (already `{{user}}`/`{{char}}`-formatted, matching V2's convention directly)
+    * Tag → `data.tags`
+    * Gender, Voice, Identity, Visibility, Profile Photo, character URL, and the exporter's own version → `data.extensions.flipped_chat` (V2's sanctioned catch-all for non-standard/platform-specific metadata)
+* Core V2 fields with no flipped.chat source (`personality`, `system_prompt`, `post_history_instructions`, `alternate_greetings`, `character_book`, `creator`, `character_version`) are left at their spec-compliant empty defaults.
+* Downloaded filename changed to `<name>-card-v2.json`.
+
 ## 1.1.1
 - Fixed Voice extraction
 - Fixed JSON export

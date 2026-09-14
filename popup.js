@@ -69,14 +69,14 @@ downloadBtn.addEventListener("click", () => {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
-  const safeName = (exportCopy.name || "character")
+  const safeName = ((exportCopy.data && exportCopy.data.name) || "character")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${safeName || "character"}-folx-export.json`;
+  a.download = `${safeName || "character"}-card-v2.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();

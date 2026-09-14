@@ -2,7 +2,10 @@
 
 # Flipped.Chat Character ⟶ JSON Exporter Browser Extension
 
-In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to JSON for import into [Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service.
+In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to Character Card V2 JSON for 
+import 
+into [Spicychat.ai](https://spicychat.ai/), 
+[Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service.
 
 ## What you need
 
