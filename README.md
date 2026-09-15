@@ -58,18 +58,18 @@ OR
 ⛔ ***Nothing ever gets changed or written back into your character. Your character data stays private.***
 
 ### Flipped.Chat fields to Character Card V2 Mapping
-| Flipped.Chat field                                                                  | Character Card V2              | Rationale                                                                                          |
-|-------------------------------------------------------------------------------------|--------------------------------|----------------------------------------------------------------------------------------------------|
-| Name                                                                                | `data.name`                    | Direct match                                                                                       |
-| Public Description                                                                  | `data.description`             | Direct match (from spec)                                                                           |
-| Hidden Description                                                                  | `data.personality`             | Mapped based on                                                                                    |
-| Greeting                                                                            | `data.first_mes`               | Direct match                                                                                       |
-| Tag                                                                                 | `data.tags`                    | Direct match                                                                                       |
-| Bio                                                                                 | `data.creator_notes`           | Short public-facing blurb                                                                          |
-| Conversation Style                                                                  | `data.mes_example`             | Already formatted with `{{user}}/{{char}}` style; this is exactly V2's example-dialogue convention |
-| Gender, Voice, Identity, Visibility, Profile Photo, character URL, exporter version | `data.extensions.flipped_chat` |                                                                                                    |
+| Flipped.Chat field                                                                  | Character Card V2              | Rationale                                                                                                             |
+|-------------------------------------------------------------------------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| Name                                                                                | `data.name`                    | Direct match                                                                                                          |
+| Public Description                                                                  | `data.description`             | Match from [spec]([spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#description)) |
+| Hidden Description                                                                  | `data.personality`             | Mapped based on [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#personality)    |
+| Greeting                                                                            | `data.first_mes`               | Direct match                                                                                                          |
+| Tag                                                                                 | `data.tags`                    | Direct match                                                                                                          |
+| Bio                                                                                 | `data.creator_notes`           | Short public-facing blurb                                                                                             |
+| Conversation Style                                                                  | `data.mes_example`             | Already formatted with `{{user}}/{{char}}` style; this is exactly V2's example-dialogue convention                    |
+| Gender, Voice, Identity, Visibility, Profile Photo, character URL, exporter version | `data.extensions.flipped_chat` | V2's sactioned catch-all for non-standard/platform-specific data                                                      |
 
- `personality`, `system_prompt`, `post_history_instructions`, `alsternate_greetings`, `character_book`, `creator`, `character_version` have no Flipped.Chat equivalent, so they're left as spec-compliant empty defaults.
+ `scenario`, `system_prompt`, `post_history_instructions`, `alternate_greetings`, `character_book`, `creator`, `character_version` have no Flipped.Chat equivalent, so they're left as spec-compliant empty defaults.
 
 
 
