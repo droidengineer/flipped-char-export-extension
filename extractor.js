@@ -297,9 +297,9 @@
     spec_version: "2.0",
     data: {
       name: valueForLabel("Name"),
-      description: valueForDescription("for character", "for character(private seen)"),
-      personality: "",
-      scenario: valueForDescription("background history", "background history(public seen)"),
+      description: valueForDescription("background history", "background history(public seen)"),
+      personality: valueForDescription("for character", "for character(private seen)"),
+      scenario: "",
       first_mes: valueForLabel("Greeting"),
       mes_example: valueForLabel("Conversational Style"),
       creator_notes: valueForLabel("Bio"),
@@ -309,7 +309,7 @@
       character_book: null,
       tags: extractTags(),
       creator: "",
-      character_version: "",
+      character_version: "1.0",
       extensions: {
         flipped_chat: flippedChatExtensions,
       },
