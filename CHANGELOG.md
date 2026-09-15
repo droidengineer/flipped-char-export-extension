@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+* Remapped Flipped private to `data.personality` and public to `data.description`
+* Added default "1.0" for `character_version`
+
 ## 1.2.0
 
 * Output format changed to **Character Card V2** (`{ spec: "chara_card_v2", spec_version: "2.0", data: {...} }`), the widely-supported standard used by SillyTavern, chub.ai, and most character-card importers — no longer a Folx-specific shape.
