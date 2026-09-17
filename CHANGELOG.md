@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.2.1
-* Remapped Flipped private to `data.personality` and public to `data.description`
+* Remapped Flipped private → `data.personality` and public → `data.description`
 * Added default "1.0" for `character_version`
 
 ## 1.2.0

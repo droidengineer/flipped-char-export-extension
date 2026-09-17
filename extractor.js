@@ -12,6 +12,7 @@
   // Used to bound "search between this label and the next" for multi-element
   // fields (e.g. tags, voice, profile photo). Output key order now follows
   // the Character Card V2 spec convention instead (see result object below).
+  // For 1:1 map Flat JSON
   const LABEL_ORDER = [
     "Profile Photo", "Avatar", "Gender", "Voice", "Name", "Identity",
     "for character(private seen)", "background history(public seen)",
@@ -316,6 +317,6 @@
     },
     _warnings: warnings,
   };
-
   return result;
+
 })();

@@ -5,11 +5,50 @@ const warningsEl = document.getElementById("warnings");
 const previewEl = document.getElementById("preview");
 const extractBtn = document.getElementById("extractBtn");
 const downloadBtn = document.getElementById("downloadBtn");
+const trigger = document.getElementById('dropdownLink');
+const menu = document.getElementById('dropdownContent');
+const versionEl = document.getElementById('version');
+
+trigger.addEventListener('click', (event) => {
+  event.preventDefault();
+  menu.classList.toggle('show');
+});
+
+// document.addEventListener('click', (event) => {
+//   if (!event.target.matches('.dropdown-link')) {
+//     menu.classList.remove('show');
+//   }
+// });
+
+let outputFormat = trigger.textContent;
+menu.addEventListener('click', (event) => {
+  if (event.target.tagName === 'A') {
+    event.preventDefault();
+
+    // Update the trigger link text to show what was selected
+    //trigger.textContent = event.target.getAttribute('data-value');
+    trigger.textContent = event.target.textContent;
+
+    // clear off previously generated layers
+    outputFormat = trigger.textContent;
+    warningsEl.style.display = "none";
+    previewEl.style.display = "none";
+    downloadBtn.style.display = "none";
+
+    // Close the menu
+    menu.classList.remove('show');
+  }
+
+});
 
 let lastResult = null;
 
 function setStatus(msg) {
   statusEl.textContent = msg;
+}
+
+function setVersion(msg) {
+  versionEl.textContent = msg;
 }
 
 async function getActiveTab() {
@@ -25,11 +64,13 @@ extractBtn.addEventListener("click", async () => {
 
   try {
     const tab = await getActiveTab();
+
     if (!tab || !tab.url || !tab.url.includes("flipped.chat")) {
       setStatus("Open a flipped.chat character edit page first.");
       return;
     }
 
+    // Inject content script
     const results = await api.scripting.executeScript({
       target: { tabId: tab.id },
       files: ["extractor.js"],
@@ -37,7 +78,7 @@ extractBtn.addEventListener("click", async () => {
 
     const data = results && results[0] && results[0].result;
     if (!data) {
-      setStatus("Extraction failed — no data returned.");
+        setStatus("Extraction failed — no data returned");
       return;
     }
 
@@ -82,3 +123,4 @@ downloadBtn.addEventListener("click", () => {
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 });
+

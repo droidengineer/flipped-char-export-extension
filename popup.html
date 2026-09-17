@@ -12,7 +12,7 @@
       margin: 0;
       padding: 14px;
     }
-    h1 {
+    b {
       font-size: 14px;
       font-weight: 600;
       margin: 0 0 10px;
@@ -43,6 +43,11 @@
       display: none;
       white-space: pre-wrap;
     }
+    #version {
+      font-size: 10px;
+      color: #9ca3af;
+      /*margin-bottom: 8px;*/
+    }
     pre {
       background: #1f2937;
       border-radius: 8px;
@@ -54,15 +59,64 @@
       word-break: break-word;
       display: none;
     }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-link {
+      color: #e5e7eb;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .dropdown-link:hover {
+      color: #fbbf24;
+    }
+    .dropdown-content {
+      display: none;
+      position: relative;
+      background-color: #1f2937;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .dropdown-icon {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .dropdown-item {
+      color: #9ca3af;
+      text-decoration: none;
+      display: block;
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+    .dropdown-item:hover {
+      background-color: #374151;
+      color: #fbbf24;
+      cursor: pointer;
+    }
+    .dropdown-content.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <h1>Flipped.Chat → Character Card V2</h1>
+  <div class="dropdown">
+    <b>Flipped.Chat → <a href="#" class="dropdown-link" id="dropdownLink">Character Card V2</a></b> <span class="dropdown-icon">∨</span>
+    <div class="dropdown-content" id="dropdownContent">
+      <a href="#" class="dropdown-item" data-value="flat-json">Flat JSON</a>
+      <a href="#" class="dropdown-item" data-value="V1">Character Card V1</a>
+      <a href="#" class="dropdown-item" data-value="V2">Character Card V2</a>
+      <a href="#" class="dropdown-item" data-value="V3">Character Card V3</a>
+    </div>
+  </div>
   <div id="status">Open a flipped.chat character edit page, then click Extract.</div>
   <button id="extractBtn">Extract Character Data</button>
   <button id="downloadBtn">Download JSON</button>
   <div id="warnings"></div>
   <pre id="preview"></pre>
   <script src="popup.js"></script>
+  <div id="version" align="right">v1.2.1</div>
 </body>
 </html>
