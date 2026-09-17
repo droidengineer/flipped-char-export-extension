@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.2.2
+* Added multiple formats for export: **Character Card V2** (`{ spec: "chara_card_v2", spec_version: "2.0", data: {...} }`), **Flat JSON** (`{ name: "...", description: "...", scenario: "...", creator_notes: "...", first_mes: "...", mes_example: "...", tags: "...", extensions: {...} }`), and **Folx JSON** (`{ name: "...", description: "...", scenario: "...", creator_notes: "...", first_mes: "...", mes_example: "...", tags: "...", extensions: {...} }`).
+
 ## 1.2.1
 * Remapped Flipped private → `data.personality` and public → `data.description`
 * Added default "1.0" for `character_version`

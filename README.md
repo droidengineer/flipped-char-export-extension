@@ -4,10 +4,10 @@
 
 In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to _**Character Card V2 JSON**_ for import into 
 [Spicychat.ai](https://docs.spicychat.ai/advanced/importing-characters) [^1], [SillyTavern](https://github.com/SillyTavern/SillyTavern), 
-[Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service.
+[Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service that supports the [Character Card specification](https://github.com/malfoyslastname/character-card-spec-v2/tree/main).
 
 > [!NOTE]
-> At the time of this writing, the browser extension is not yet signed for permanent installation. For now, you can load it as a temporary add-on in Firefox or Chrome. Once final testing is done, I'll release a signed version.
+> This browser extension is not yet signed for permanent installation. For now, you can load it as a temporary add-on in Firefox or Chrome. Once final testing is done, I'll release a signed version.
 
 ## What you need
 
