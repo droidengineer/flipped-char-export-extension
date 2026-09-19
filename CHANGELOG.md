@@ -1,7 +1,13 @@
 # Changelog
 
 # 1.2.2
-* Added multiple formats for export: **Character Card V2** (`{ spec: "chara_card_v2", spec_version: "2.0", data: {...} }`), **Flat JSON** (`{ name: "...", description: "...", scenario: "...", creator_notes: "...", first_mes: "...", mes_example: "...", tags: "...", extensions: {...} }`), and **Folx JSON** (`{ name: "...", description: "...", scenario: "...", creator_notes: "...", first_mes: "...", mes_example: "...", tags: "...", extensions: {...} }`).
+* Added multiple formats for export:
+1. **Flat JSON** 
+2. **Character Card V1** (`{ name: "...", description: "...", personality: "...", scenario: "...", first_mes: "...", mes_example: "..." }`)
+3. **Character Card V2** (`{ spec: "chara_card_v2", spec_version: "2.0", data: {...} }`)
+
+* Added extension version to extension popup window
+
 
 ## 1.2.1
 * Remapped Flipped private → `data.personality` and public → `data.description`

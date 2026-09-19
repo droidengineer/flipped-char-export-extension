@@ -2,9 +2,16 @@
 
 # Flipped.Chat Character ⟶ JSON Exporter Browser Extension
 
-In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to _**Character Card V2 JSON**_ for import into 
+In-context browser extension to export [Flipped.Chat](https://flipped.chat) characters to:
+- flat JSON
+- Character Card V1
+- Character Card V2
+
+for import into 
 [Spicychat.ai](https://docs.spicychat.ai/advanced/importing-characters) [^1], [SillyTavern](https://github.com/SillyTavern/SillyTavern), 
 [Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service that supports the [Character Card specification](https://github.com/malfoyslastname/character-card-spec-v2/tree/main).
+
+Look at the [field mapping tables](mapping.md) used in all export formats if you have questions about what field from a Flipped.Chat character is mapped to what JSON field.
 
 > [!NOTE]
 > This browser extension is not yet signed for permanent installation. For now, you can load it as a temporary add-on in Firefox or Chrome. Once final testing is done, I'll release a signed version.
@@ -57,27 +64,8 @@ OR
 
 ⛔ ***Nothing ever gets changed or written back into your character. Your character data stays private.***
 
-### Flipped.Chat fields to Character Card V2 Mapping
-| Flipped.Chat field                                                                  | Character Card V2              | Rationale                                                                                                             |
-|-------------------------------------------------------------------------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| Name                                                                                | `data.name`                    | Direct match                                                                                                          |
-| Public Description                                                                  | `data.description`             | Match from [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#description) |
-| Hidden Description                                                                  | `data.personality`             | Mapped based on [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#personality)    |
-| Greeting                                                                            | `data.first_mes`               | Direct match                                                                                                          |
-| Tag                                                                                 | `data.tags`                    | Direct match                                                                                                          |
-| Bio                                                                                 | `data.creator_notes`           | Short public-facing blurb                                                                                             |
-| Conversation Style                                                                  | `data.mes_example`             | Already formatted with `{{user}}/{{char}}` style; this is exactly V2's example-dialogue convention                    |
-| Gender, Voice, Identity, Visibility, Profile Photo, character URL, exporter version | `data.extensions.flipped_chat` | V2's sactioned catch-all for non-standard/platform-specific data                                                      |
-
- `scenario`, `system_prompt`, `post_history_instructions`, `alternate_greetings`, `character_book`, `creator`, `character_version` have no Flipped.Chat equivalent, so they're left as spec-compliant empty defaults.
-
-
-
-
-
-
-
-
+### Mapping Tables
+Look at the [field mapping tables](mapping.md) used in all export formats if you have questions about what field from a Flipped.Chat character is mapped to what JSON field.
 
 
 ![](icons/icon48-action.png) Kid Tested. Mother Approved.

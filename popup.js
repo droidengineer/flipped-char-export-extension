@@ -8,10 +8,29 @@ const downloadBtn = document.getElementById("downloadBtn");
 const trigger = document.getElementById('dropdownLink');
 const menu = document.getElementById('dropdownContent');
 const versionEl = document.getElementById('version');
+const version = api.runtime.getManifest().version;
+
+const flatJson = ['Flat JSON', 'extractor.js', 'flat'];
+const v1JSON = ['Character Card V1', 'extractor-v1.js', 'card-v1'];
+const v2JSON = ['Character Card V2', 'extractor-v2.js', 'card-v2'];
+const v3JSON = ['Character Card V3', 'extractor-v3.js', 'card-v3'];
+const outputTypes= [flatJson, v1JSON, v2JSON, v3JSON];
+
+versionEl.textContent = "v" + version;
+
+function setStatus(msg) {
+  statusEl.textContent = msg;
+}
+
+//let outputFormat = trigger.textContent;
+//let idx = trigger.getAttribute('data-value');
+let outputType = outputTypes[2];
+let lastResult = null;
 
 trigger.addEventListener('click', (event) => {
   event.preventDefault();
   menu.classList.toggle('show');
+
 });
 
 // document.addEventListener('click', (event) => {
@@ -20,7 +39,7 @@ trigger.addEventListener('click', (event) => {
 //   }
 // });
 
-let outputFormat = trigger.textContent;
+
 menu.addEventListener('click', (event) => {
   if (event.target.tagName === 'A') {
     event.preventDefault();
@@ -29,27 +48,21 @@ menu.addEventListener('click', (event) => {
     //trigger.textContent = event.target.getAttribute('data-value');
     trigger.textContent = event.target.textContent;
 
+    let idx = event.target.getAttribute('data-value');
+    outputType = outputTypes[idx];
+    //outputFormat = trigger.textContent;
+
     // clear off previously generated layers
-    outputFormat = trigger.textContent;
     warningsEl.style.display = "none";
     previewEl.style.display = "none";
     downloadBtn.style.display = "none";
+    setStatus("Open a flipped.chat character edit page, then click Extract.");
 
     // Close the menu
     menu.classList.remove('show');
   }
 
 });
-
-let lastResult = null;
-
-function setStatus(msg) {
-  statusEl.textContent = msg;
-}
-
-function setVersion(msg) {
-  versionEl.textContent = msg;
-}
 
 async function getActiveTab() {
   const [tab] = await api.tabs.query({ active: true, currentWindow: true });
@@ -70,10 +83,10 @@ extractBtn.addEventListener("click", async () => {
       return;
     }
 
-    // Inject content script
+    // Inject content script according to `outputType`
     const results = await api.scripting.executeScript({
       target: { tabId: tab.id },
-      files: ["extractor.js"],
+      files: [outputType[1]],
     });
 
     const data = results && results[0] && results[0].result;
@@ -110,14 +123,15 @@ downloadBtn.addEventListener("click", () => {
     type: "application/json",
   });
   const url = URL.createObjectURL(blob);
-  const safeName = ((exportCopy.data && exportCopy.data.name) || "character")
+  const safeName = ((exportCopy.data && exportCopy.data.name) || exportCopy.name || "character")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${safeName || "character"}-card-v2.json`;
+  a.download = `${safeName || "character"}-${outputType[2]}.json`;
+  //setStatus(a.download);
   document.body.appendChild(a);
   a.click();
   a.remove();

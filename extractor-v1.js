@@ -9,8 +9,10 @@
   const norm = (s) => (s || "").replace(/[ \t]+\n/g, "\n").trim();
 
   // Ordered list of field labels as they appear top-to-bottom on the edit page.
-  // Used both to bound "search between this label and the next" for
-  // multi-element fields, and to define the output JSON's key order below.
+  // Used to bound "search between this label and the next" for multi-element
+  // fields (e.g. tags, voice, profile photo). Output key order now follows
+  // the Character Card V2 spec convention instead (see result object below).
+  // For 1:1 map Flat JSON
   const LABEL_ORDER = [
     "Profile Photo", "Avatar", "Gender", "Voice", "Name", "Identity",
     "for character(private seen)", "background history(public seen)",
@@ -263,29 +265,34 @@
     return null;
   }
 
-  // Key order below intentionally follows LABEL_ORDER (character_url and
-  // version first, then each field in the order its label appears on the
-  // page top-to-bottom; "Avatar" is skipped since it's the same image as
-  // Profile Photo, per the merged profile_photo field).
+  // ── Character Card V1 mapping ──────────────────────────────────────────
+  // Spec: { spec: "chara_card_v2", spec_version: "2.0", data: {...} }
+  // Core spec fields with no flipped.chat source (personality, system_prompt,
+  // post_history_instructions, alternate_greetings, character_book, creator,
+  // character_version) are left at their spec-compliant empty defaults.
+  //
+  // Mapping used:
+  //   Name                          -> result.name
+  //   for character (private seen)  -> result.description      (always-injected core definition)
+  //                                 -> result.personality
+  //   background history (public)   -> result.scenario          (public backstory/setting context)
+  //   Greeting                      -> result.first_mes
+  //   Conversational Style          -> result.mes_example        (already {{user}}/{{char}} formatted)
+  //   Gender, Voice, Identity,
+  //   Visibility, Profile Photo,
+  //   character URL, exporter ver.  -> data.extensions.flipped_chat
+  //     (V2's sanctioned catch-all for non-standard/platform-specific data)
+
   const result = {
-    character_url: location.href,
-    exporter_version: extVersion,
-    profile_photo: extractProfilePhoto(),
-    gender: selectedOption("Gender", ["Woman", "Man", "Non-binary"]),
-    voice: extractVoice(),
     name: valueForLabel("Name"),
-    identity: valueForLabel("Identity"),
-    description: {
-      for_character_private: valueForDescription("for character", "for character(private seen)"),
-      background_history_public: valueForDescription("background history", "background history(public seen)"),
-    },
-    greeting: valueForLabel("Greeting"),
-    conversational_style: valueForLabel("Conversational Style"),
-    tags: extractTags(),
-    bio: valueForLabel("Bio"),
-    visibility: selectedOption("Visibility", ["Public", "Unlisted", "Private"]),
+    description: valueForDescription("for character", "for character(private seen)"),
+    personality: "",
+    scenario: valueForDescription("background history", "background history(public seen)"),
+    first_mes: valueForLabel("Greeting"),
+    mes_example: valueForLabel("Conversational Style"),
+
     _warnings: warnings,
   };
-
   return result;
+
 })();
