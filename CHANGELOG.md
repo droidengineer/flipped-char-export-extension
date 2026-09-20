@@ -1,5 +1,12 @@
 # Changelog
 
+# 1.2.3
+* added new output format:
+4. **V2-V1 Backfill** output format for broken V1 implementations
+* removed `data.character_book` from v2 output
+* remapped public description → `v2.scenario`
+* remapped private description → `v2.description`
+
 # 1.2.2
 * Added multiple formats for export:
 1. **Flat JSON** 

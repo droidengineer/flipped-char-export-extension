@@ -1,5 +1,7 @@
 # Flipped.Chat Character Field Mapping Tables
-When exporting/porting to a new platform and there are no direct, one-to-one mappings of fields then it takes the best effort educated guessing with testing. There are the current mapping tables that map Flipped.Chat character fields to their relevant target format fields.
+When exporting/porting to a new platform and there are no direct, one-to-one mappings of fields then it takes the best effort educated guessing with testing. These are the current mapping tables that map Flipped.Chat character fields to their relevant target format fields.
+
+### [Character Card v2 Specification](https://github.com/malfoyslastname/character-card-spec-v2)
 
 ## Flat JSON
 This is a 1:1 mapping directly. Every field available from the `flipped.chat/create/...` page is copied and included here.
@@ -25,7 +27,7 @@ type Flipped = {
 }
 ```
 
-## Character Card V1
+## 🪪 Character Card V1
 
 ### Specification
 ```typescript
@@ -63,7 +65,7 @@ Given a card name `chara`:
 
 
 
-## Character Card V2
+## 🪪 Character Card V2
 
 ### Specification
 ```typescript
@@ -94,19 +96,36 @@ type CharacterCardV2 = {
     }
 }
 ```
+The Flipped.Chat V2 Extension:
+```typescript
+type FlippedChatExtension = {
+    character_url: string
+    exporter_version: string
+    profile_photo: string
+    gender: string
+    voice: {
+        name: string
+        tags: Array<string>
+    }
+    identity: string
+    visibility: string
+}
+```
+
 
 Given a character card `chara`:
 
 | Flipped.Chat field                                                                  | Character Card V2                    | Rationale                                                                                                          |
 |-------------------------------------------------------------------------------------|--------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 | Name                                                                                | `chara.data.name`                    | Direct match                                                                                                       |
-| Public Description                                                                  | `chara.data.description`             | Match from [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#description)      |
-| Hidden Description                                                                  | `chara.data.personality`             | Mapped based on [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#personality) |
+| Public Description                                                                  | `chara.data.scenario`                | Match from [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#description)      |
+| Hidden Description                                                                  | `chara.data.description`             | Mapped based on [spec](https://github.com/malfoyslastname/character-card-spec-v2/blob/main/spec_v1.md#personality) |
 | Greeting                                                                            | `chara.data.first_mes`               | Direct match                                                                                                       |
 | Tag                                                                                 | `chara.data.tags`                    | Direct match                                                                                                       |
 | Bio                                                                                 | `chara.data.creator_notes`           | Short public-facing blurb                                                                                          |
 | Conversation Style                                                                  | `chara.data.mes_example`             | Already formatted with `{{user}}/{{char}}` style; this is exactly V2's example-dialogue convention                 |
 | Gender, Voice, Identity, Visibility, Profile Photo, character URL, exporter version | `chara.data.extensions.flipped_chat` | V2's sactioned catch-all for non-standard/platform-specific data                                                   |
 
-`scenario`, `system_prompt`, `post_history_instructions`, `alternate_greetings`, `character_book`, `creator`, `character_version` have no Flipped.Chat equivalent, so they're left as spec-compliant empty defaults.
+`personality`, `system_prompt`, `post_history_instructions`, `alternate_greetings`, `character_book`, `creator`, `character_version` have no Flipped.Chat equivalent, so they're left as spec-compliant empty defaults.
 
+✅ This format passes validation from specification author's  [Character Card Utilities](https://malfoyslastname.github.io/chara-card-utils-web/).

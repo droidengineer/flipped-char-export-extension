@@ -265,32 +265,63 @@
     return null;
   }
 
-  // ── Character Card V1 mapping ──────────────────────────────────────────
+  // ── Character Card V2 mapping ──────────────────────────────────────────
   // Spec: { spec: "chara_card_v2", spec_version: "2.0", data: {...} }
   // Core spec fields with no flipped.chat source (personality, system_prompt,
   // post_history_instructions, alternate_greetings, character_book, creator,
   // character_version) are left at their spec-compliant empty defaults.
   //
   // Mapping used:
-  //   Name                          -> result.name
-  //   for character (private seen)  -> result.description      (always-injected core definition)
-  //                                 -> result.personality
-  //   background history (public)   -> result.scenario          (public backstory/setting context)
-  //   Greeting                      -> result.first_mes
-  //   Conversational Style          -> result.mes_example        (already {{user}}/{{char}} formatted)
+  //   Name                          -> data.name
+  //   for character (private seen)  -> data.description      (always-injected core definition)
+  //   background history (public)   -> data.scenario          (public backstory/setting context)
+  //   Bio                           -> data.creator_notes      (short public-facing blurb)
+  //   Greeting                      -> data.first_mes
+  //   Conversational Style          -> data.mes_example        (already {{user}}/{{char}} formatted)
+  //   Tag                           -> data.tags
   //   Gender, Voice, Identity,
   //   Visibility, Profile Photo,
   //   character URL, exporter ver.  -> data.extensions.flipped_chat
   //     (V2's sanctioned catch-all for non-standard/platform-specific data)
+  const flippedChatExtensions = {
+    character_url: location.href,
+    exporter_version: extVersion,
+    profile_photo: extractProfilePhoto(),
+    gender: selectedOption("Gender", ["Woman", "Man", "Non-binary"]),
+    voice: extractVoice(),
+    identity: valueForLabel("Identity"),
+    visibility: selectedOption("Visibility", ["Public", "Unlisted", "Private"]),
+  };
 
   const result = {
+    // V1 backfill
     name: valueForLabel("Name"),
     description: valueForDescription("for character", "for character(private seen)"),
-    personality: "",
     scenario: valueForDescription("background history", "background history(public seen)"),
+    personality: "",
     first_mes: valueForLabel("Greeting"),
     mes_example: valueForLabel("Conversational Style"),
 
+    spec: "chara_card_v2",
+    spec_version: "2.0",
+    data: {
+      name: valueForLabel("Name"),
+      description: valueForDescription("for character", "for character(private seen)"),
+      scenario: valueForDescription("background history", "background history(public seen)"),
+      personality: "",
+      first_mes: valueForLabel("Greeting"),
+      mes_example: valueForLabel("Conversational Style"),
+      creator_notes: valueForLabel("Bio"),
+      system_prompt: "",
+      post_history_instructions: "",
+      alternate_greetings: [],
+      tags: extractTags(),
+      creator: "",
+      character_version: "",
+      extensions: {
+        flipped_chat: flippedChatExtensions,
+      },
+    },
     _warnings: warnings,
   };
   return result;

@@ -13,11 +13,11 @@
   // fields (e.g. tags, voice, profile photo). Output key order now follows
   // the Character Card V2 spec convention instead (see result object below).
   // For 1:1 map Flat JSON
-  const LABEL_ORDER = [
-    "Profile Photo", "Avatar", "Gender", "Voice", "Name", "Identity",
-    "for character(private seen)", "background history(public seen)",
-    "Greeting", "Conversational Style", "Tag", "Bio", "Visibility"
-  ];
+  // const LABEL_ORDER = [
+  //   "Profile Photo", "Avatar", "Gender", "Voice", "Name", "Identity",
+  //   "for character(private seen)", "background history(public seen)",
+  //   "Greeting", "Conversational Style", "Tag", "Bio", "Visibility"
+  // ];
 
   // Extension version, included in the export so downstream tooling can tell
   // which extractor schema produced a given file. Content scripts have
@@ -298,16 +298,15 @@
     spec_version: "2.0",
     data: {
       name: valueForLabel("Name"),
-      description: valueForDescription("background history", "background history(public seen)"),
-      personality: valueForDescription("for character", "for character(private seen)"),
-      scenario: "",
+      description: valueForDescription("for character", "for character(private seen)"),
+      scenario: valueForDescription("background history", "background history(public seen)"),
+      personality: "",
       first_mes: valueForLabel("Greeting"),
       mes_example: valueForLabel("Conversational Style"),
       creator_notes: valueForLabel("Bio"),
       system_prompt: "",
       post_history_instructions: "",
       alternate_greetings: [],
-      character_book: null,
       tags: extractTags(),
       creator: "",
       character_version: "",

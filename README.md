@@ -6,8 +6,9 @@ In-context browser extension to export [Flipped.Chat](https://flipped.chat) char
 - flat JSON
 - Character Card V1
 - Character Card V2
+- Character Card V2 with V1 backfill
 
-for import into 
+for import into [Agnai.Chat](https://agnai.chat/), 
 [Spicychat.ai](https://docs.spicychat.ai/advanced/importing-characters) [^1], [SillyTavern](https://github.com/SillyTavern/SillyTavern), 
 [Folx AI Contact Manager](assets/Folx-home.png), a database, or other app/service that supports the [Character Card specification](https://github.com/malfoyslastname/character-card-spec-v2/tree/main).
 

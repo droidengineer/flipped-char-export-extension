@@ -13,8 +13,8 @@ const version = api.runtime.getManifest().version;
 const flatJson = ['Flat JSON', 'extractor.js', 'flat'];
 const v1JSON = ['Character Card V1', 'extractor-v1.js', 'card-v1'];
 const v2JSON = ['Character Card V2', 'extractor-v2.js', 'card-v2'];
-const v3JSON = ['Character Card V3', 'extractor-v3.js', 'card-v3'];
-const outputTypes= [flatJson, v1JSON, v2JSON, v3JSON];
+const v2BfJSON = ['Character Card V2-V1Backfill', 'extractor-v2bf.js', 'card-v2bf'];
+const outputTypes= [flatJson, v1JSON, v2JSON, v2BfJSON];
 
 versionEl.textContent = "v" + version;
 
@@ -78,7 +78,7 @@ extractBtn.addEventListener("click", async () => {
   try {
     const tab = await getActiveTab();
 
-    if (!tab || !tab.url || !tab.url.includes("flipped.chat")) {
+    if (!tab || !tab.url || !tab.url.includes("flipped.chat/edit")) {
       setStatus("Open a flipped.chat character edit page first.");
       return;
     }
