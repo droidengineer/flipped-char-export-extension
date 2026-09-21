@@ -22,23 +22,25 @@ function setStatus(msg) {
   statusEl.textContent = msg;
 }
 
-//let outputFormat = trigger.textContent;
-//let idx = trigger.getAttribute('data-value');
 let outputType = outputTypes[2];
 let lastResult = null;
+
+
+// document.querySelector('#go-to-output').addEventListener('click', (e) => {
+//   e.preventDefault();
+//   if (api.runtime.openOptionsPage) {
+//     api.runtime.openOptionsPage();
+//   } else {
+//     window.open(api.runtime.getURL('options.html'));
+//   }
+// });
+
 
 trigger.addEventListener('click', (event) => {
   event.preventDefault();
   menu.classList.toggle('show');
 
 });
-
-// document.addEventListener('click', (event) => {
-//   if (!event.target.matches('.dropdown-link')) {
-//     menu.classList.remove('show');
-//   }
-// });
-
 
 menu.addEventListener('click', (event) => {
   if (event.target.tagName === 'A') {

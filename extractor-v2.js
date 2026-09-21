@@ -299,8 +299,8 @@
     data: {
       name: valueForLabel("Name"),
       description: valueForDescription("for character", "for character(private seen)"),
-      scenario: valueForDescription("background history", "background history(public seen)"),
       personality: "",
+      scenario: valueForDescription("background history", "background history(public seen)"),
       first_mes: valueForLabel("Greeting"),
       mes_example: valueForLabel("Conversational Style"),
       creator_notes: valueForLabel("Bio"),

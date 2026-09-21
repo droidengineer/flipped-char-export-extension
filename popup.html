@@ -46,7 +46,7 @@
     #version {
       font-size: 10px;
       color: #9ca3af;
-      text-align: right;
+      /*text-align: right;*/
       /*margin-bottom: 8px;*/
     }
     pre {
@@ -100,12 +100,26 @@
     .dropdown-content.show {
       display: block;
     }
+    .options {
+      text-decoration: none;
+      display: inline-block;
+      cursor: pointer;
+      font-size: 10px;
+    }
+    .status-row {
+      display: flex;
+      flex-direction: row;
+      font-size: 10px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0;
+    }
 
   </style>
 </head>
 <body>
   <div class="dropdown">
-    <b>Flipped.Chat → <a href="#" class="dropdown-link" id="dropdownLink">Character Card V2</a></b> <span class="dropdown-icon">∨</span>
+    <b>Flipped.Chat → <a href="#" class="dropdown-link" id="dropdownLink">Character Card V2</a></b> <span class="dropdown-icon">✨ </span>
     <div class="dropdown-content" id="dropdownContent">
       <a href="#" class="dropdown-item" data-value=0>Flat JSON</a>
       <a href="#" class="dropdown-item" data-value=1>Character Card V1</a>
@@ -118,7 +132,11 @@
   <button id="downloadBtn">Download JSON</button>
   <div id="warnings"></div>
   <pre id="preview"></pre>
-  <div id="version">v</div>
+  <div class="status-row">
+    <a href="#" class="options" id="go-to-options">⚙️</a>
+    <span id="version">v</span>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

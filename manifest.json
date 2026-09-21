@@ -4,7 +4,7 @@
   "description": "Extracts character data from a flipped.chat character edit page and offers multiple output formats for export into compliant JSON.",
   "version": "1.2.3",
   "homepage_url": "https://github.com/droidengineer/flipped-char-export-extension",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["https://flipped.chat/*"],
   "icons": {
     "32": "icons/icon32-bg.png",
@@ -24,5 +24,9 @@
       },
       "strict_min_version": "140.0"
     }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
   }
 }
