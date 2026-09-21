@@ -7,8 +7,9 @@
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["https://flipped.chat/*"],
   "icons": {
-    "32": "icons/icon32-bg.png",
-    "64": "icons/icon64-bg.png"
+    "32": "icons/ext-logo32.png",
+    "48": "icons/ext-logo48.png",
+    "64": "icons/ext-logo64.png"
   },
   "action": {
     "default_popup": "popup.html",
