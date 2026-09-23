@@ -32,6 +32,8 @@
     #extractBtn:hover { background: #6d28d9; }
     #downloadBtn { background: #059669; color: white; display: none; }
     #downloadBtn:hover { background: #047857; }
+    #downloadAllBtn { background: #059669; color: white; display: none; }
+    #downloadAllBtn:hover { background: #047857; }
     #status { font-size: 12px; color: #9ca3af; min-height: 16px; margin-bottom: 8px; }
     #warnings {
       font-size: 11px;
@@ -46,7 +48,7 @@
     #version {
       font-size: 10px;
       color: #9ca3af;
-      /*text-align: right;*/
+      text-align: right;
       /*margin-bottom: 8px;*/
     }
     pre {
@@ -114,6 +116,13 @@
       align-items: center;
       margin-bottom: 0;
     }
+    .option-link {
+      margin-left: 5px;
+      color: #e5e7eb;
+      font-size: 12px;
+      display: none;
+
+    }
 
   </style>
 </head>
@@ -130,10 +139,11 @@
   <div id="status">Open a flipped.chat character edit page, then click Extract.</div>
   <button id="extractBtn">Extract Character Data</button>
   <button id="downloadBtn">Download JSON</button>
+  <button id="downloadAllBtn">Download All</button>
   <div id="warnings"></div>
   <pre id="preview"></pre>
   <div class="status-row">
-    <a href="#" class="options" id="go-to-options">⚙️</a>
+    <a href="#" class="options" id="go-to-options">⚙️</a><span id="option-link"></span>
     <span id="version">v</span>
   </div>
 

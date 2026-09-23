@@ -1,5 +1,14 @@
 # Changelog
 
+# 1.2.4
+* bulk extraction and downloads
+* direct import into several online services, chat apps, and character card importers and hubs
+* basic options page not fully implemented
+* scaffolding for dynamic extensions
+  * agnai
+  * spicychat
+  * folx
+  
 # 1.2.3
 * added new output format:
 4. **V2-V1 Backfill** output format for broken V1 implementations

@@ -1,5 +1,8 @@
 const api = typeof browser !== "undefined" ? browser : chrome;
 
+const creatorEl = document.getElementById("creator");
+
+
 const saveOptions = () => {
     const creator = document.getElementById("creator");
 
@@ -16,7 +19,7 @@ const saveOptions = () => {
 
 const restoreOptions = () => {
     api.storage.local.get(
-        {creator:''},
+        {creatorName:''},
         (items) => {
             document.getElementById('creator').value = items.creator;
         });

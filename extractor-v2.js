@@ -265,7 +265,24 @@
     return null;
   }
 
-  // ── Character Card V2 mapping ──────────────────────────────────────────
+  // let node = document.querySelector("flex min-h-[80px] text-sm focus-visible:outline-none focus-visible:ring-0" +
+  //     " focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 relative z-10 w-full resize-none" +
+  //     " border-0 placeholder:text-white/30 h-28 rounded-xl border-transparent bg-white/5 p-3 focus:border-white/[0.56] focus:outline-none focus:ring-0");
+  // if (!node) {
+  //   warnings.push("Could not locate the character card element — check the Character Card crop area manually.");
+  //   return null;
+  // }
+  // node.className = "flex min-h-[80px] text-sm focus-visible:outline-none focus-visible:ring-0" +
+  //     " focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 relative z-10 w-full border-0 placeholder:text-white/30 h-28 rounded-xl border-transparent bg-white/5 p-3 focus:border-white/[0.56] focus:outline-none focus:ring-0";
+  //
+  // node = document.getElementsByClassName(":r23:-form-item");
+  // node.className = "flex min-h-[80px] text-sm focus-visible:outline-none focus-visible:ring-0" +
+  //     " focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 relative z-10 w-full resize-none border-0 placeholder:text-white/30 h-28 rounded-xl border-transparent bg-white/5 p-3 focus:border-white/[0.56] focus:outline-none focus:ring-0";
+  //
+
+
+
+    // ── Character Card V2 mapping ──────────────────────────────────────────
   // Spec: { spec: "chara_card_v2", spec_version: "2.0", data: {...} }
   // Core spec fields with no flipped.chat source (personality, system_prompt,
   // post_history_instructions, alternate_greetings, character_book, creator,
