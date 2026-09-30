@@ -12,13 +12,13 @@
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     // 1. Select the "All" filter tab (no-op if already selected).
-    const allBtn = [...document.querySelectorAll('button, div, span')].find(
-        (el) => el.children.length === 0 && el.textContent.trim() === 'All'
-    );
-    if (allBtn) {
-        allBtn.click();
-        await sleep(1500);
-    }
+    // const allBtn = [...document.querySelectorAll('button, div, span')].find(
+    //     (el) => el.children.length === 0 && el.textContent.trim() === 'All'
+    // );
+    // if (allBtn) {
+    //     allBtn.click();
+    //     await sleep(1500);
+    // }
 
     // Card titles are <h3> elements inside the "My Character" grid.
     const cardTitles = () => [...document.querySelectorAll('div.flex.flex-wrap.gap-4 h3')];

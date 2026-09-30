@@ -6,8 +6,10 @@ const previewEl = document.getElementById("preview");
 const extractBtn = document.getElementById("extractBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 const downloadAllBtn = document.getElementById("downloadAllBtn");
-const trigger = document.getElementById('dropdownLink');
-const menu = document.getElementById('dropdownContent');
+const outputTrigger = document.getElementById('dropdownLink');
+const outputMenu = document.getElementById('dropdownContent');
+const optionTrigger = document.getElementById('dropdownOption');
+const optionMenu = document.getElementById('optionsContent');
 const versionEl = document.getElementById('version');
 const version = api.runtime.getManifest().version;
 
@@ -19,6 +21,7 @@ const v1JSON = ['Character Card V1', 'extractor-v1.js', 'card-v1'];
 const v2JSON = ['Character Card V2', 'extractor-v2.js', 'card-v2'];
 const v2BfJSON = ['Character Card V2-V1Backfill', 'extractor-v2bf.js', 'card-v2bf'];
 const outputTypes= [flatJson, v1JSON, v2JSON, v2BfJSON];
+const visibilityTypes = ['All', 'Featured', 'Public', 'Unlisted', 'Private'];
 
 versionEl.textContent = "v" + version;
 
@@ -31,6 +34,7 @@ function setOptionWarning(msg) {
 
 let outputType = outputTypes[2];
 let lastResult = null;
+let visibilityType = visibilityTypes[0];
 
 
 // document.querySelector('#go-to-output').addEventListener('click', (e) => {
@@ -47,6 +51,7 @@ optionEl.addEventListener('click', async () => {
     previewEl.style.display = "none";
     downloadBtn.style.display = "none";
     downloadAllBtn.style.display = "none";
+
     setStatus("Loading all of your characters...");
 
   try {
@@ -89,19 +94,58 @@ optionEl.addEventListener('click', async () => {
 
 });
 
-trigger.addEventListener('click', (event) => {
-  event.preventDefault();
-  menu.classList.toggle('show');
+optionTrigger.addEventListener('click', (event) => {
+    event.preventDefault();
+    optionMenu.classList.toggle('show');
+});
+
+optionMenu.addEventListener('click', async (event) => {
+    if (event.target.tagName === 'A') {
+        event.preventDefault();
+
+        // Update the trigger link text to show what was selected
+        //trigger.textContent = event.target.getAttribute('data-value');
+        const target = event.target.textContent;
+        setOptionWarning(target);
+        visibilityType = target;
+
+        const visBtn = [...document.querySelectorAll('button, div, span')].find(
+            (el) => el.children.length === 0 && el.textContent.trim() === target
+        );
+        if (visBtn) {
+            visBtn.click();
+            await sleep(1500);
+        }
+
+        //let idx = event.target.getAttribute('data-value');
+        //outputType = outputTypes[idx];
+        //outputFormat = trigger.textContent;
+
+        // clear off previously generated layers
+        // warningsEl.style.display = "none";
+        // previewEl.style.display = "none";
+        // downloadBtn.style.display = "none";
+        //setStatus("Open a flipped.chat character edit page, then click Extract.");
+
+        // Close the menu
+        optionMenu.classList.remove('show');
+    }
 
 });
 
-menu.addEventListener('click', (event) => {
+
+outputTrigger.addEventListener('click', (event) => {
+  event.preventDefault();
+  outputMenu.classList.toggle('show');
+});
+
+outputMenu.addEventListener('click', (event) => {
   if (event.target.tagName === 'A') {
     event.preventDefault();
 
     // Update the trigger link text to show what was selected
     //trigger.textContent = event.target.getAttribute('data-value');
-    trigger.textContent = event.target.textContent;
+    outputTrigger.textContent = event.target.textContent;
 
     let idx = event.target.getAttribute('data-value');
     outputType = outputTypes[idx];
@@ -114,7 +158,7 @@ menu.addEventListener('click', (event) => {
     setStatus("Open a flipped.chat character edit page, then click Extract.");
 
     // Close the menu
-    menu.classList.remove('show');
+    outputMenu.classList.remove('show');
   }
 
 });
@@ -203,18 +247,26 @@ downloadAllBtn.addEventListener("click", async () => {
     });
     const shortList = exportList;
 
+    let count = 0;
     try {
         //for (const link of shortList) {
         const len = shortList.length;
         let link = shortList.pop();
         let tab = await api.tabs.create({ url: link, active: true });
-        tab = await getActiveTab();
+        //tab = await getActiveTab();
 
         while (shortList.length > 0) {
             if (!tab && !tab.id) {
                 setStatus("⚠️ Error: Tab creation failed");
                 return;
             }
+
+            // DEBUG
+            if (count === 3) {
+                setStatus(`Stopping at ${count}`);
+                return;
+            }
+
             //const link = shortList.pop();
             setOptionWarning(`📥Downloading ${link}`);
             setStatus(`${shortList.length} 🌐 ${link}`);
@@ -223,6 +275,18 @@ downloadAllBtn.addEventListener("click", async () => {
 
             setTimeout(() => {}, 2500);
             // Inject content script according to `outputType`
+            await api.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: [outputType[1]],
+            }, (results) => {
+                if (api.runtime.lastError || !results || !results[0]) {
+                    console.error("Error reading DOM:", api.runtime.lastError);
+                    setOptionWarning(`Error reading DOM: ${api.runtime.lastError}`);
+                    return;
+                }
+                const result = results[0].result;
+                console.log("DOM data extraction:", result);
+            });
             // const results = await api.scripting.executeScript({
             //     target: { tabId: tab.id },
             //     files: [outputType[1]],
