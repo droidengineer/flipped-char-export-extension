@@ -5,7 +5,7 @@
     <title>Extension Settings</title>
     <style>
         body {
-            width: 120px;
+            width: 100%; /*120px;*/
             font-family: system-ui, sans-serif;
             color: #111827;
             /*background: #e5e7eb;*/
@@ -20,37 +20,95 @@
             margin: 0 0 10px;
             color: #111827;
         }
+        hr {
+            color: #d2d6de;
+
+        }
         input {
-            width: 100%;
-            padding: 9px 12px;
+            width: 120px;
+            padding: 6px 9px;
+            /*padding: 9px 12px;*/
             border-radius: 8px;
-            border: #111827;
+            border: thin solid #c1c3c6;
+            color: #111827;
             font-size: 12px;
             font-weight: 400;
             cursor: text;
-            margin-bottom: 8px;
-            background-color: #e5e7eb;
+            margin-top: 6px;
+            /*margin-bottom: 8px;*/
+            background-color: #ffffff;
+            display: block;
+        }
+        /*.creator {*/
+        /*    width: 120px;*/
+        /*    border-radius: 8px;*/
+        /*    border: #111827;*/
+        /*    color: #111827;*/
+        /*}*/
+        .creator:hover {
+            /*background-color: #e5e7eb;*/
+            /*border-radius: 8px;*/
+            border: #1155ea;
+            /*color: #111827;*/
+        }
+        #status {
+            display: flex;
+            color: #d2d6de;
 
         }
-
-        .creator:hover {
-            background-color: #ffffff;
-            border-radius: 8px;
-            border: #111827;
-            color: #111827;
+        #sleep {
+            /*position: absolute;*/
+        }
+        .label {
+            /*position: relative;*/
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .option-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0;
+        }
+        .description {
+            font-size: 14px;
+            color: #7f8288;
         }
 
     </style>
 </head>
 <body>
 <div>
-    <label><b>Creator</b>
-        <input type="text" class="creator" id="creator"></input>
-    </label>
+    <div>
+        <span class="option-row">
+            <span class="label">👤 Creator</span>
+            <span><input type="text" id="creator"></input></span>
+        </span>
+        <span class="description"><i>Default creator name to fill in `data.creator` value. Default empty.</i></span>
+    </div>
+    <hr>
+    <div>
+        <span class="option-row">
+            <span class="label">⏱️ Scroll Sleep Time (ms)</span>
+            <span><input type="text" id="sleep"></input></span>
+        </span>
+        <span class="description"><i>The time in milliseconds to wait for scroll data. Default 1200.</i></span>
+    </div>
+    <hr>
+    <div>
+        <span class="option-row">
+            <span class="label">📁 Download Directory</span>
+            <span><input type="text" id="dir"></input></span>
+        </span>
+        <span class="description"><i>⛔ This is currently disabled. Defaults to browser download dir.</i></span>
+    </div>
 </div>
-
-<div id="status"></div>
+<hr>
+<span class="option-row">
 <button id="save">Save</button>
+<div id="status">🏷️ </div>
+</span>
 <script src="options.js"></script>
 
 </body>

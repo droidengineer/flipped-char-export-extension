@@ -5,7 +5,7 @@
   "version": "1.2.4",
   "homepage_url": "https://github.com/droidengineer/flipped-char-export-extension",
   "permissions": ["activeTab", "scripting", "storage", "tabs"],
-  "host_permissions": ["https://flipped.chat/*"],
+  "host_permissions": ["https://flipped.chat/*", "https://*/* "],
   "icons": {
     "32": "icons/ext-logo32.png",
     "48": "icons/ext-logo48.png",

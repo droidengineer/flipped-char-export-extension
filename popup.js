@@ -8,8 +8,7 @@ const downloadBtn = document.getElementById("downloadBtn");
 const downloadAllBtn = document.getElementById("downloadAllBtn");
 const outputTrigger = document.getElementById('dropdownLink');
 const outputMenu = document.getElementById('dropdownContent');
-const optionTrigger = document.getElementById('dropdownOption');
-const optionMenu = document.getElementById('optionsContent');
+
 const versionEl = document.getElementById('version');
 const version = api.runtime.getManifest().version;
 
@@ -52,7 +51,7 @@ optionEl.addEventListener('click', async () => {
     downloadBtn.style.display = "none";
     downloadAllBtn.style.display = "none";
 
-    setStatus("Loading all of your characters...");
+    //setStatus("Loading all of your characters...");
 
   try {
       const tab = await getActiveTab();
@@ -83,6 +82,8 @@ optionEl.addEventListener('click', async () => {
       setStatus(`Loaded ${links.length} characters links.`);
       setOptionWarning("");
 
+      extractBtn.style.display = "none";
+
       downloadAllBtn.textContent = `Download All ${links.length} Characters`;
       downloadAllBtn.style.display = "block";
 
@@ -93,46 +94,6 @@ optionEl.addEventListener('click', async () => {
 
 
 });
-
-optionTrigger.addEventListener('click', (event) => {
-    event.preventDefault();
-    optionMenu.classList.toggle('show');
-});
-
-optionMenu.addEventListener('click', async (event) => {
-    if (event.target.tagName === 'A') {
-        event.preventDefault();
-
-        // Update the trigger link text to show what was selected
-        //trigger.textContent = event.target.getAttribute('data-value');
-        const target = event.target.textContent;
-        setOptionWarning(target);
-        visibilityType = target;
-
-        const visBtn = [...document.querySelectorAll('button, div, span')].find(
-            (el) => el.children.length === 0 && el.textContent.trim() === target
-        );
-        if (visBtn) {
-            visBtn.click();
-            await sleep(1500);
-        }
-
-        //let idx = event.target.getAttribute('data-value');
-        //outputType = outputTypes[idx];
-        //outputFormat = trigger.textContent;
-
-        // clear off previously generated layers
-        // warningsEl.style.display = "none";
-        // previewEl.style.display = "none";
-        // downloadBtn.style.display = "none";
-        //setStatus("Open a flipped.chat character edit page, then click Extract.");
-
-        // Close the menu
-        optionMenu.classList.remove('show');
-    }
-
-});
-
 
 outputTrigger.addEventListener('click', (event) => {
   event.preventDefault();
@@ -155,6 +116,7 @@ outputMenu.addEventListener('click', (event) => {
     warningsEl.style.display = "none";
     previewEl.style.display = "none";
     downloadBtn.style.display = "none";
+    extractBtn.style.display = "block";
     setStatus("Open a flipped.chat character edit page, then click Extract.");
 
     // Close the menu
@@ -242,9 +204,9 @@ downloadAllBtn.addEventListener("click", async () => {
 
     const exportList = previewEl.textContent.split("\n"); //lastResult[0];
     //api.tabs.create({ url: exportList });
-    api.permissions.request({
-        origins: ["<all_urls>"]
-    });
+    // api.permissions.request({
+    //     origins: ["https://*://"]
+    // });
     const shortList = exportList;
 
     let count = 0;
@@ -252,10 +214,20 @@ downloadAllBtn.addEventListener("click", async () => {
         //for (const link of shortList) {
         const len = shortList.length;
         let link = shortList.pop();
-        let tab = await api.tabs.create({ url: link, active: true });
+        let tab = null;
+        //api.tabs.create({ url: exportList });
+        tab = api.tabs.create({url: link, active: true});
         //tab = await getActiveTab();
 
         while (shortList.length > 0) {
+            api.permissions.request({
+                origins: ["https://*/*"]
+            }).then((granted) => {
+                if (granted) {
+                    tab = api.tabs.update({ url: link, active: true });
+                }
+            });
+
             if (!tab && !tab.id) {
                 setStatus("⚠️ Error: Tab creation failed");
                 return;
@@ -273,24 +245,27 @@ downloadAllBtn.addEventListener("click", async () => {
             previewEl.textContent = shortList.join("\n");
 
 
-            setTimeout(() => {}, 2500);
+            //setTimeout(() => {}, 2500);
+
             // Inject content script according to `outputType`
-            await api.scripting.executeScript({
-                target: { tabId: tab.id },
-                files: [outputType[1]],
-            }, (results) => {
-                if (api.runtime.lastError || !results || !results[0]) {
-                    console.error("Error reading DOM:", api.runtime.lastError);
-                    setOptionWarning(`Error reading DOM: ${api.runtime.lastError}`);
-                    return;
-                }
-                const result = results[0].result;
-                console.log("DOM data extraction:", result);
-            });
-            // const results = await api.scripting.executeScript({
+
+            // await api.scripting.executeScript({
             //     target: { tabId: tab.id },
             //     files: [outputType[1]],
+            // }, (results) => {
+            //     if (api.runtime.lastError || !results || !results[0]) {
+            //         console.error("Error reading DOM:", api.runtime.lastError);
+            //         setOptionWarning(`Error reading DOM: ${api.runtime.lastError}`);
+            //         return;
+            //     }
+            //     const result = results[0].result;
+            //     console.log("DOM data extraction:", result);
             // });
+
+            const results = await api.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: [outputType[1]],
+            });
             // const data = results && results[0] && results[0].result;
             // if (!data) {
             //     setStatus("⚠️ Extraction failed — no data returned");
@@ -301,7 +276,7 @@ downloadAllBtn.addEventListener("click", async () => {
             // extractBtn.click();
             // downloadBtn.click();
             link = shortList.pop();
-            tab = await api.tabs.update(tab.id, { url: link });
+            //tab = await api.tabs.update(tab.id, { url: link });
         }
         previewEl.textContent = "No more URLs left to download.";
         setStatus(`✔️All ${len} downloads completed.`);

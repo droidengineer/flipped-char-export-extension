@@ -53,6 +53,9 @@
     const scroller = findScroller();
     let last = -1;
     let stable = 0;
+    // let sleepTime = api.storage.local.get(['sleep'], (result) => {
+    //     console.log('sleepTime: ', result);
+    // });
     for (let i = 0; i < 200 && stable < 4; i++) {
         scroller.scrollTop = scroller.scrollHeight;
         window.scrollTo(0, document.body.scrollHeight);
